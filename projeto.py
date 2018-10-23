@@ -98,7 +98,7 @@ def board_moves(b):
             # conteudo da posicao
             content = b[c][l]
             #Se for espaco vazio, entao ha possibilidade de haver jogada
-            if(content == '_'):
+            if(content == c_empty()):
                 empty+=1
                 # teste das linhas da esquerda
                 if l>=2 and l<lines and b[c][l-1] == c_peg() and b[c][l-2] == c_peg():
