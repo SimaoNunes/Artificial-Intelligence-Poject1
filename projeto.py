@@ -4,33 +4,34 @@ import copy
 #------------VARIAVEIS--------------    
 #-----------------------------------
 
-b1 = [  ["O","O","O","O","_"], 
+b1= [   ["_","O","O","O","_"], 
         ["O","_","O","_","O"], 
         ["_","O","_","O","_"],
         ["O","_","O","_","_"],
         ["_","O","_","_","_"]
-]
+    ]
+
 #-----------------------------------
 #--------------TIPOS----------------    
 #-----------------------------------
 
 # TAI content
-def c_peg ():
+def c_peg():
     return "O"
-def c_empty ():
+def c_empty():
     return "_"
 def c_blocked ():
     return "X"
-def is_empty (e):
+def is_empty(e):
     return e == c_empty()
 def is_peg (e):
     return e == c_peg()
-def is_blocked (e):
+def is_blocked(e):
     return e == c_blocked()
 
 # TAI pos
 # Tuplo (l, c)
-def make_pos (l, c):
+def make_pos(l, c):
     return (l, c)
 def pos_l(pos):
     return pos[0]
@@ -51,9 +52,7 @@ def move_final (move):
 #------------FUNCOES--------------    
 #-----------------------------------
 
-def board_perform_move(b, move):
-    #copiar tabuleiro
-    res    = copy.deepcopy(b)
+def board_perform_move(board, move):
     #definir coordenadas iniciais
     start  = move[0]
     lStart = pos_l(start)
@@ -62,22 +61,27 @@ def board_perform_move(b, move):
     final  = move[1]
     lFinal = pos_l(final)
     cFinal = pos_c(final)
+    #verificar que o movimento e valido
+    if(is_empty(board[lStart][lFinal])):
+        return "Can't perform move because there is no peg in position " + str(move[0])
+    #copiar tabuleiro
+    replicaBoard = copy.deepcopy(board)
     #colocar peca no novo local, bem como o lugar vazio deixado por ela
-    res[lStart][cStart] = c_empty()
-    res[lFinal][cFinal] = c_peg()
+    replicaBoard[lStart][cStart] = c_empty()
+    replicaBoard[lFinal][cFinal] = c_peg()
     #apagar a peca que foi comida - descobrir coordenadas da peca comida
     #caso a jogada seja na mesma linha, a linha mantem se
     if lStart == lFinal:
-        cDelete = int((cStart+cFinal)/2)
-        res[lFinal][cDelete] = c_empty()
+        removePeg = int((cStart+cFinal)/2)
+        replicaBoard[lFinal][removePeg] = c_empty()
     #caso a jogada seja na mesma coluna, a coluna mantem se 
     else:
-        lDelete = int((lStart+lFinal)/2)
-        res[lDelete][cFinal] = c_empty()
+        removePeg = int((lStart+lFinal)/2)
+        replicaBoard[removePeg][cFinal] = c_empty()
     #devolver novo tabuleiro
-    return res
+    return replicaBoard
 
-
-# print(board_perform_move(b1, [(0,0),(2,0)]))
+print(b1)
+print(board_perform_move(b1, [(4,4),(4,3)]))
 
 
