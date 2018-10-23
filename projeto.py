@@ -1,15 +1,16 @@
-import copy, search, utils, timeit
+from search import *
+import copy
 
 #-----------------------------------
 #------------VARIAVEIS--------------    
 #-----------------------------------
 
-b1= [   ["_","O","O","O","_"], 
-        ["O","_","O","_","O"], 
-        ["_","O","_","O","_"],
-        ["O","_","O","_","_"],
-        ["_","O","_","_","_"]
-    ]
+b1=[
+["_","O","O","O","_"],
+["O","_","O","_","O"],
+["_","O","_","O","_"],
+["O","_","O","_","_"],
+["_","O","_","_","_"]]
 
 #-----------------------------------
 #--------------TIPOS----------------    
@@ -61,11 +62,11 @@ def board_perform_move(board, move):
     final  = move[1]
     lFinal = pos_l(final)
     cFinal = pos_c(final)
-    #verificar que o movimento e valido
-    if(is_empty(board[lStart][lFinal])):
-        return "Can't perform move because there is no peg in position " + str(move[0])
     #copiar tabuleiro
     replicaBoard = copy.deepcopy(board)
+    #verificar que o movimento e valido
+    if(is_empty(board[lStart][cStart])):
+        return replicaBoard 
     #colocar peca no novo local, bem como o lugar vazio deixado por ela
     replicaBoard[lStart][cStart] = c_empty()
     replicaBoard[lFinal][cFinal] = c_peg()
@@ -82,7 +83,7 @@ def board_perform_move(board, move):
     return replicaBoard
 
 # print(b1)
-# print(board_perform_move(b1, [(4,4),(4,3)]))
+# print(board_perform_move(b1, [(0, 2), (0, 0)]))
 
 
 
@@ -109,17 +110,16 @@ def board_moves(b):
                     move = [ (c,l+2), (c,l) ]
                     res.append(move)
                 # teste das colunas de cima
-                if c>=2 and b[c-1][1] == c_peg() and b[c-2][l] == c_peg():
+                if c>=2 and b[c-1][l] == c_peg() and b[c-2][l] == c_peg():
                     move = [ (c-2,l), (c,l) ]
                     res.append(move)
                 # teste das colunas de baixo
-                if c<columns-2 and b[c+1][1] == c_peg() and b[c+2][l] == c_peg():
+                if c<columns-2 and b[c+1][l] == c_peg() and b[c+2][l] == c_peg():
                     move = [ (c+2,l), (c,l) ]
                     res.append(move)
     return res
 
-print(board_moves(b1))
-
+# print(board_moves(b1))
 
 class solitaire():
 # """Models a Solitaire problem as a satisfaction problem.
