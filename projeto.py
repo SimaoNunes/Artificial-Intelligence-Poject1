@@ -61,7 +61,7 @@ def board_perform_move(board, move):
     lFinal = pos_l(final)
     cFinal = pos_c(final)
     #verificar que o movimento e valido
-    if(is_empty(board[lStart][lFinal])):
+    if is_empty(board[lStart][lFinal]):
         return "Can't perform move because there is no peg in position " + str(move[0])
     #copiar tabuleiro
     replicaBoard = copy.deepcopy(board)
@@ -80,24 +80,18 @@ def board_perform_move(board, move):
     #devolver novo tabuleiro
     return replicaBoard
 
-print(b1)
-print(board_perform_move(b1, [(4,4),(4,3)]))
 
+def board_moves_miguel(board):
 
-
-def board_moves(b):
-
-    c = len(b)
-    l = len(b[0])
-    for i in range(c):
-        for j in range(l):
-            content = b[i][j]
-            print(j)
-            print('cont',content)
+    moves = []
+    columns= len(board)
+    lines = len(board[0])
+    for l in range(lines):
+        for c in range(columns):
+            if is_empty(board[l][c]):
+                
 
 print(board_moves(b1))
-
-
 
 class solitaire():
 # """Models a Solitaire problem as a satisfaction problem.
