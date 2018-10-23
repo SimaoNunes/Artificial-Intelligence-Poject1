@@ -1,4 +1,4 @@
-import copy, search, utils
+import copy, search, utils, timeit
 
 #-----------------------------------
 #------------VARIAVEIS--------------    
@@ -81,17 +81,10 @@ def board_perform_move(board, move):
     return replicaBoard
 
 
-def board_moves_miguel(board):
 
-    moves = []
-    columns= len(board)
-    lines = len(board[0])
-    for l in range(lines):
-        for c in range(columns):
-            if is_empty(board[l][c]):
-                
 
-print(board_moves(b1))
+print(sorted(board_moves_miguel([["_","O","O","O","_"],["O","_","O","_","O"],["_","O","_","O","_"],["O","_","O","_","_"],["_","O","_","_","_"]])))
+
 
 class solitaire():
 # """Models a Solitaire problem as a satisfaction problem.
