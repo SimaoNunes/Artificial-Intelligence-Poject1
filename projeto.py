@@ -1,4 +1,4 @@
-import copy
+import copy, search, utils
 
 #-----------------------------------
 #------------VARIAVEIS--------------    
@@ -83,4 +83,36 @@ def board_perform_move(board, move):
 print(b1)
 print(board_perform_move(b1, [(4,4),(4,3)]))
 
+
+
+def board_moves(b):
+
+    c = len(b)
+    l = len(b[0])
+    for i in range(c):
+        for j in range(l):
+            content = b[i][j]
+            print(j)
+            print('cont',content)
+
+print(board_moves(b1))
+
+
+
+class solitaire():
+# """Models a Solitaire problem as a satisfaction problem.
+# A solution cannot have more than 1 peg left on the board."""
+    def __init__(self, board):
+        self.b = board
+    def actions(self, state):
+        return 0
+    def result(self, state, action):
+        return 0
+    def goal_test(self, state):
+        return 0
+    def path_cost(self, c, state1, action, state2):
+        return 0
+    def h(self, node):
+        return 0
+# """Needed for informed search."""
 
