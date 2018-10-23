@@ -1,4 +1,4 @@
-import copy, search, utils
+import copy, search, utils, timeit
 
 #-----------------------------------
 #------------VARIAVEIS--------------    
@@ -81,23 +81,40 @@ def board_perform_move(board, move):
     #devolver novo tabuleiro
     return replicaBoard
 
-print(b1)
-print(board_perform_move(b1, [(4,4),(4,3)]))
+# print(b1)
+# print(board_perform_move(b1, [(4,4),(4,3)]))
 
 
 
 def board_moves(b):
-
-    c = len(b)
-    l = len(b[0])
-    for i in range(c):
-        for j in range(l):
-            content = b[i][j]
-            print(j)
-            print('cont',content)
+    columns = len(b)
+    lines   = len(b[0])
+    empty   = 0
+    res     = []
+    # percorrer colunas
+    for c in range(columns):
+        # percorrer linhas
+        for l in range(lines):
+            # conteudo da posicao
+            content = b[c][l]
+            #Se for espaco vazio, entao ha possibilidade de haver jogada
+            if(content == '_'):
+                empty+=1
+                if l>=2 and l<lines and b[c][l-1] == c_peg() and b[c][l-2] == c_peg():
+                    move = [ (c,l-2), (c,l) ]
+                    res.append(move)
+                if l<lines-2 and b[c][l+1] == c_peg() and b[c][l+2] == c_peg():
+                    move = [ (c,l+2), (c,l) ]
+                    res.append(move)
+                if c>=2 and b[c-1][1] == c_peg() and b[c-2][l] == c_peg():
+                    move = [ (c-2,l), (c,l) ]
+                    res.append(move)
+                if c<columns-2 and b[c+1][1] == c_peg() and b[c+2][l] == c_peg():
+                    move = [ (c+2,l), (c,l) ]
+                    res.append(move)
+    return res
 
 print(board_moves(b1))
-
 
 
 class solitaire():
