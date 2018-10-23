@@ -100,15 +100,19 @@ def board_moves(b):
             #Se for espaco vazio, entao ha possibilidade de haver jogada
             if(content == '_'):
                 empty+=1
+                # teste das linhas da esquerda
                 if l>=2 and l<lines and b[c][l-1] == c_peg() and b[c][l-2] == c_peg():
                     move = [ (c,l-2), (c,l) ]
                     res.append(move)
+                # teste das linhas da direita
                 if l<lines-2 and b[c][l+1] == c_peg() and b[c][l+2] == c_peg():
                     move = [ (c,l+2), (c,l) ]
                     res.append(move)
+                # teste das colunas de cima
                 if c>=2 and b[c-1][1] == c_peg() and b[c-2][l] == c_peg():
                     move = [ (c-2,l), (c,l) ]
                     res.append(move)
+                # teste das colunas de baixo
                 if c<columns-2 and b[c+1][1] == c_peg() and b[c+2][l] == c_peg():
                     move = [ (c+2,l), (c,l) ]
                     res.append(move)
