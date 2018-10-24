@@ -1,18 +1,20 @@
-import copy, search, utils, timeit
+from search import *
+import copy
 
-#-----------------------------------
-#------------VARIAVEIS--------------    
-#-----------------------------------
+#-----------------------------------#
+#------------VARIAVEIS--------------#    
+#-----------------------------------#
 
-b1 = [ ["_","O","O","O","_"], 
-       ["O","_","O","_","O"], 
-       ["_","O","_","O","_"],
-       ["O","_","O","_","_"],
-       ["_","O","_","_","_"] ]
+b1=[
+["_","O","O","O","_"],
+["O","_","O","_","O"],
+["_","O","_","O","_"],
+["O","_","O","_","_"],
+["_","O","_","_","_"]]
 
-#-----------------------------------
-#--------------TIPOS----------------    
-#-----------------------------------
+#-----------------------------------#
+#--------------TIPOS----------------#    
+#-----------------------------------#
 
 # TAI content
 def c_peg():
@@ -47,9 +49,9 @@ def move_final (move):
     return move[1]
 
 
-#-----------------------------------
-#------------FUNCOES--------------    
-#-----------------------------------
+#-----------------------------------#
+#-------------FUNCOES---------------#
+#-----------------------------------#
 
 def board_perform_move(board, move):
     #definir coordenadas iniciais
@@ -60,11 +62,11 @@ def board_perform_move(board, move):
     final  = move[1]
     lFinal = pos_l(final)
     cFinal = pos_c(final)
-    #verificar que o movimento e valido
-    if is_empty(board[lStart][lFinal]):
-        return "Can't perform move because there is no peg in position " + str(move[0])
     #copiar tabuleiro
     replicaBoard = copy.deepcopy(board)
+    #verificar que o movimento e valido
+    if(is_empty(board[lStart][cStart])):
+        return replicaBoard 
     #colocar peca no novo local, bem como o lugar vazio deixado por ela
     replicaBoard[lStart][cStart] = c_empty()
     replicaBoard[lFinal][cFinal] = c_peg()
@@ -83,7 +85,37 @@ def board_perform_move(board, move):
 
 
 
-print(sorted(board_moves_miguel([["_","O","O","O","_"],["O","_","O","_","O"],["_","O","_","O","_"],["O","_","O","_","_"],["_","O","_","_","_"]])))
+def board_moves(b):
+    columns = len(b)
+    lines   = len(b[0])
+    empty   = 0
+    res     = []
+    # percorrer colunas
+    for l in range(lines):
+        # percorrer linhas
+        for c in range(columns):
+            # conteudo da posicao
+            content = b[c][l]
+            #Se for espaco vazio, entao ha possibilidade de haver jogada
+            if(is_empty(content)):
+                empty += 1
+                # teste das linhas da esquerda
+                if l>=2 and l<lines and b[c][l-1] == c_peg() and b[c][l-2] == c_peg():
+                    move = [ (c,l-2), (c,l) ]
+                    res.append(move)
+                # teste das linhas da direita
+                if l<lines-2 and b[c][l+1] == c_peg() and b[c][l+2] == c_peg():
+                    move = [ (c,l+2), (c,l) ]
+                    res.append(move)
+                # teste das colunas de cima
+                if c>=2 and b[c-1][l] == c_peg() and b[c-2][l] == c_peg():
+                    move = [ (c-2,l), (c,l) ]
+                    res.append(move)
+                # teste das colunas de baixo
+                if c<columns-2 and b[c+1][l] == c_peg() and b[c+2][l] == c_peg():
+                    move = [ (c+2,l), (c,l) ]
+                    res.append(move)
+    return res
 
 
 class solitaire():
