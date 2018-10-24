@@ -90,7 +90,6 @@ def board_perform_move(board, move):
 def board_moves(b):
     columns = len(b)
     lines   = len(b[0])
-    empty   = 0
     res     = []
     # percorrer colunas
     for c in range(columns):
@@ -100,7 +99,6 @@ def board_moves(b):
             content = b[c][l]
             #Se for espaco vazio, entao ha possibilidade de haver jogada
             if(content == c_empty()):
-                empty+=1
                 # teste das linhas da esquerda
                 if l>=2 and l<lines and b[c][l-1] == c_peg() and b[c][l-2] == c_peg():
                     move = [ (c,l-2), (c,l) ]
@@ -123,26 +121,42 @@ def board_moves(b):
 
 class sol_state:
     def __init__(self, board):
-        self.board = board
+        self.board = board 
     def __lt__(self, other):
          return self.board < other.board
-
+    def is_goal(self):
+        n = 0
+        columns = len(self.board)
+        lines   = len(self.board[0])
+        # percorrer colunas
+        for c in range(columns):
+            # percorrer linhas
+            for l in range(lines):
+                # conteudo da posicao
+                content = self.board[c][l]
+                #Se tiver peca, incrementar n
+                if(content == c_peg()):
+                    n+=1
+                    if n>1:
+                        return False
+        return True
 
 class solitaire(Problem):
 # """Models a Solitaire problem as a satisfaction problem.
 # A solution cannot have more than 1 peg left on the board."""
     def __init__(self, board):
         self.initial = sol_state(board)
-        self.board = board
     def actions(self, state):
         return board_moves(state.board)
     def result(self, state, action):
-        return board_perform_move(state.board, action)
+        return sol_state(board_perform_move(state.board, action)) 
     def goal_test(self, state):
-        return 0
+        return state.is_goal()
     def path_cost(self, c, state1, action, state2):
         return 0
     def h(self, node):
         return 0
 # """Needed for informed search."""
 
+
+# print(solitaire([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).result(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]),[(3, 0), (3, 2)]).board)
