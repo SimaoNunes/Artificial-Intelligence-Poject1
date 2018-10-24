@@ -118,15 +118,23 @@ def board_moves(b):
     return res
 
 
-class solitaire():
+class sol_state:
+    def __init__(self, board):
+        self.board = board
+    def __lt__(self, other):
+         return self.board < other.board
+
+
+class solitaire(Problem):
 # """Models a Solitaire problem as a satisfaction problem.
 # A solution cannot have more than 1 peg left on the board."""
     def __init__(self, board):
-        self.b = board
+        self.initial = sol_state(board)
+        self.board = board
     def actions(self, state):
-        return 0
+        return board_moves(state.board)
     def result(self, state, action):
-        return 0
+        return board_perform_move(state.board, action)
     def goal_test(self, state):
         return 0
     def path_cost(self, c, state1, action, state2):
