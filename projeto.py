@@ -1,4 +1,5 @@
 from search import *
+from utils import *
 import copy
 
 #-----------------------------------#
@@ -132,7 +133,7 @@ class sol_state:
                 # conteudo da posicao
                 content = self.board[c][l]
                 # se tiver peca, incrementar n
-                if(content == c_peg()):
+                if(is_peg(content)):
                     n+=1
                     if n>1:
                         return False
@@ -151,7 +152,6 @@ class solitaire(Problem):
         return state.is_goal()
     def path_cost(self, c, state1, action, state2):
         return c+1
-    def h(self, node):
+    def h(self, state):
         return 0
 # """Needed for informed search."""
-
