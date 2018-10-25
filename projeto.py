@@ -1,9 +1,9 @@
 from search import *
 import copy
 
-#-----------------------------------
-#------------VARIAVEIS--------------    
-#-----------------------------------
+#-----------------------------------#
+#------------VARIAVEIS--------------#    
+#-----------------------------------#
 
 b1=[
 ["_","O","O","O","_"],
@@ -12,9 +12,9 @@ b1=[
 ["O","_","O","_","_"],
 ["_","O","_","_","_"]]
 
-#-----------------------------------
-#--------------TIPOS----------------    
-#-----------------------------------
+#-----------------------------------#
+#--------------TIPOS----------------#    
+#-----------------------------------#
 
 # TAI content
 def c_peg():
@@ -49,9 +49,9 @@ def move_final (move):
     return move[1]
 
 
-#-----------------------------------
-#------------FUNCOES--------------    
-#-----------------------------------
+#-----------------------------------#
+#-------------FUNCOES---------------#
+#-----------------------------------#
 
 def board_perform_move(board, move):
     #definir coordenadas iniciais
@@ -82,8 +82,6 @@ def board_perform_move(board, move):
     #devolver novo tabuleiro
     return replicaBoard
 
-# print(b1)
-# print(board_perform_move(b1, [(0, 2), (0, 0)]))
 
 
 
@@ -92,13 +90,13 @@ def board_moves(b):
     lines   = len(b[0])
     res     = []
     # percorrer colunas
-    for c in range(columns):
+    for l in range(lines):
         # percorrer linhas
-        for l in range(lines):
+        for c in range(columns):
             # conteudo da posicao
             content = b[c][l]
             #Se for espaco vazio, entao ha possibilidade de haver jogada
-            if(content == c_empty()):
+            if(is_empty(content)):
                 # teste das linhas da esquerda
                 if l>=2 and l<lines and b[c][l-1] == c_peg() and b[c][l-2] == c_peg():
                     move = [ (c,l-2), (c,l) ]
@@ -117,7 +115,6 @@ def board_moves(b):
                     res.append(move)
     return res
 
-# print(board_moves(b1))
 
 class sol_state:
     def __init__(self, board):
@@ -134,8 +131,8 @@ class sol_state:
             for l in range(lines):
                 # conteudo da posicao
                 content = self.board[c][l]
-                #Se tiver peca, incrementar n
-                if(content == c_peg()):
+                # se tiver peca, incrementar n
+                if(is_peg(content)):
                     n+=1
                     if n>1:
                         return False
@@ -154,9 +151,6 @@ class solitaire(Problem):
         return state.is_goal()
     def path_cost(self, c, state1, action, state2):
         return c+1
-    # def h(self, node):
-    #     return 0
+    def h(self, state):
+        return len(self.actions(state))
 # """Needed for informed search."""
-
-
-# print(solitaire([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).result(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]),[(3, 0), (3, 2)]).board)
