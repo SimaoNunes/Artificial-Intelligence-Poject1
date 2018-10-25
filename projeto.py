@@ -88,7 +88,6 @@ def board_perform_move(board, move):
 def board_moves(b):
     columns = len(b)
     lines   = len(b[0])
-    empty   = 0
     res     = []
     # percorrer colunas
     for l in range(lines):
@@ -98,7 +97,6 @@ def board_moves(b):
             content = b[c][l]
             #Se for espaco vazio, entao ha possibilidade de haver jogada
             if(is_empty(content)):
-                empty += 1
                 # teste das linhas da esquerda
                 if l>=2 and l<lines and b[c][l-1] == c_peg() and b[c][l-2] == c_peg():
                     move = [ (c,l-2), (c,l) ]
@@ -120,25 +118,39 @@ def board_moves(b):
 
 class sol_state:
     def __init__(self, board):
-        self.board = board
+        self.board = board 
     def __lt__(self, other):
          return self.board < other.board
-
+    def is_goal(self):
+        n = 0
+        columns = len(self.board)
+        lines   = len(self.board[0])
+        # percorrer colunas
+        for c in range(columns):
+            # percorrer linhas
+            for l in range(lines):
+                # conteudo da posicao
+                content = self.board[c][l]
+                # se tiver peca, incrementar n
+                if(content == c_peg()):
+                    n+=1
+                    if n>1:
+                        return False
+        return True
 
 class solitaire(Problem):
 # """Models a Solitaire problem as a satisfaction problem.
 # A solution cannot have more than 1 peg left on the board."""
     def __init__(self, board):
         self.initial = sol_state(board)
-        self.board = board
     def actions(self, state):
         return board_moves(state.board)
     def result(self, state, action):
-        return board_perform_move(state.board, action)
+        return sol_state(board_perform_move(state.board, action)) 
     def goal_test(self, state):
-        return 0
+        return state.is_goal()
     def path_cost(self, c, state1, action, state2):
-        return 0
+        return c+1
     def h(self, node):
         return 0
 # """Needed for informed search."""
