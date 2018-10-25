@@ -153,9 +153,9 @@ class solitaire(Problem):
     def goal_test(self, state):
         return state.is_goal()
     def path_cost(self, c, state1, action, state2):
-        return 0
-    def h(self, node):
-        return 0
+        return c+1
+    # def h(self, node):
+    #     return 0
 # """Needed for informed search."""
 
 
