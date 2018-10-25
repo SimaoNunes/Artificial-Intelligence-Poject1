@@ -161,6 +161,7 @@ class solitaire(Problem):
             return 0
         lines   = len(node.state.board)
         columns = len(node.state.board[0])
+        isolatedPegs = 0
         for l in range(lines):
             for c in range(columns):
                 content = node.state.board[l][c]
@@ -169,7 +170,7 @@ class solitaire(Problem):
                     for i in range(4):
                         try:
                             adjacent = node.state.board[l + helper.get(i*2)][c + helper.get(i*2+1)]
-                            if is_empty(adjacent):
+                            if is_empty(adjacent) or is_blocked(adjacent):
                                 emptyPositions += 1
                         except IndexError:
                             adjacent = 'null'
@@ -177,3 +178,5 @@ class solitaire(Problem):
                         isolatedPegs += 1
         return node.state.pegs + isolatedPegs
 # """Needed for informed search."""
+
+#print(solitaire([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).h(Node(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]))))
