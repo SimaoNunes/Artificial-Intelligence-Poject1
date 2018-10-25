@@ -2,17 +2,6 @@ from search import *
 import copy
 
 #-----------------------------------#
-#------------VARIAVEIS--------------#    
-#-----------------------------------#
-
-b1=[
-["_","O","O","O","_"],
-["O","_","O","_","O"],
-["_","O","_","O","_"],
-["O","_","O","_","_"],
-["_","O","_","_","_"]]
-
-#-----------------------------------#
 #--------------TIPOS----------------#    
 #-----------------------------------#
 
@@ -82,9 +71,6 @@ def board_perform_move(board, move):
     #devolver novo tabuleiro
     return replicaBoard
 
-
-
-
 def board_moves(board):
     lines   = len(board)
     columns = len(board[0])
@@ -135,7 +121,9 @@ class sol_state:
     def __lt__(self, other):
          return self.board < other.board
     def __eq__(self, other):
-        return isinstance(other, sol_state) and self.board == other.board and self.pegs == other.pegs
+        return isinstance(other, sol_state) and self.board == other.board
+    def __hash__(self):
+        return hash(str(self.board))
 
 
 class solitaire(Problem):
@@ -153,11 +141,38 @@ class solitaire(Problem):
         else:
             return False
     def path_cost(self, c, state1, action, state2):
-        return c+1
-    def h(self, state):
-        return state.pegs-1
+        return c + 1
+    def h(self, node):
+
+        # se apenas tiver uma peca, devolve 0 imediatamente
+        if(self.goal_test(node.state)):
+            return 0
         
+        pegs  = node.state.pegs
+        board = node.state.board
+        lines   = len(board)
+        columns = len(board[0])
+        actions = self.actions(board)
+        res=0
+
+        # # percorrer colunas
+        # for l in range(lines):
+        #     # percorrer linhas
+        #     for c in range(columns):
+        #         # conteudo da posicao
+        #         content = board[l][c]
+        #         if(is_peg(content)):
+        #             for i in range(len(actions)):
+        #                 if( actions[i][0] == (l,c)):
+        #                     break
+        #                 else:
+        #                     res+=1
+
+        return pegs + res
+                    
+
+
 # """Needed for informed search."""
 
 #print(solitaire([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).h(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]])))
-#print(solitaire([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).result(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]),[(3, 0), (3, 2)]).board)
+#print(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).pegs)
