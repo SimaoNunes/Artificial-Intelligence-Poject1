@@ -126,6 +126,14 @@ class sol_state:
         return hash(str(self.board))
 
 
+b1 = [
+      ["O","O","_","X","X","X"],
+      ["O","_","O","O","O","O"],
+      ["_","O","O","_","O","O"],
+      ["O","O","O","_","O","O"]
+]
+
+
 class solitaire(Problem):
 # """Models a Solitaire problem as a satisfaction problem.
 # A solution cannot have more than 1 peg left on the board."""
