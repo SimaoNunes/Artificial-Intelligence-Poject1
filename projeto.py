@@ -85,58 +85,58 @@ def board_perform_move(board, move):
 
 
 
-def board_moves(b):
-    columns = len(b)
-    lines   = len(b[0])
-    res     = []
+def board_moves(board):
+    lines   = len(board)
+    columns = len(board[0])
+    moves     = []
     # percorrer colunas
     for l in range(lines):
         # percorrer linhas
         for c in range(columns):
             # conteudo da posicao
-            content = b[c][l]
+            content = board[l][c]
             #Se for espaco vazio, entao ha possibilidade de haver jogada
             if(is_empty(content)):
-                # teste das linhas da esquerda
-                if l>=2 and l<lines and b[c][l-1] == c_peg() and b[c][l-2] == c_peg():
-                    move = [ (c,l-2), (c,l) ]
-                    res.append(move)
+                # teste das linhas de cima
+                if l>=2 and l<lines and is_peg(board[l-1][c]) and is_peg(board[l-2][c]):
+                    move = [ (l-2,c), (l,c) ]
+                    moves.append(move)
                 # teste das linhas da direita
-                if l<lines-2 and b[c][l+1] == c_peg() and b[c][l+2] == c_peg():
-                    move = [ (c,l+2), (c,l) ]
-                    res.append(move)
-                # teste das colunas de cima
-                if c>=2 and b[c-1][l] == c_peg() and b[c-2][l] == c_peg():
-                    move = [ (c-2,l), (c,l) ]
-                    res.append(move)
+                if l<lines-2 and is_peg(board[l+1][c]) and is_peg(board[l+2][c]):
+                    move = [ (l+2,c), (l,c) ]
+                    moves.append(move)
+                # teste das colunas da esquerda
+                if c>=2 and is_peg(board[l][c-1]) and is_peg(board[l][c-2]):
+                    move = [ (l,c-2), (l,c) ]
+                    moves.append(move)
                 # teste das colunas de baixo
-                if c<columns-2 and b[c+1][l] == c_peg() and b[c+2][l] == c_peg():
-                    move = [ (c+2,l), (c,l) ]
-                    res.append(move)
-    return res
+                if c<columns-2 and is_peg(board[l][c+1]) and is_peg(board[l][c+2]):
+                    move = [ (l,c+2), (l,c) ]
+                    moves.append(move)
+    return moves
 
 
 class sol_state:
     def __init__(self, board):
-        self.board = board 
-    def __lt__(self, other):
-         return self.board < other.board
-    def is_goal(self):
-        n = 0
-        columns = len(self.board)
-        lines   = len(self.board[0])
-        # percorrer colunas
-        for c in range(columns):
-            # percorrer linhas
-            for l in range(lines):
+        self.board = board
+        pegs = 0
+        lines   = len(board)
+        columns = len(board[0])
+        # percorrer linhas
+        for l in range(lines):
+            # percorrer colunas
+            for c in range(columns):
                 # conteudo da posicao
-                content = self.board[c][l]
+                content = board[l][c]
                 # se tiver peca, incrementar n
                 if(is_peg(content)):
-                    n+=1
-                    if n>1:
-                        return False
-        return True
+                    pegs+=1
+        self.pegs = pegs
+    def __lt__(self, other):
+         return self.board < other.board
+    def __eq__(self, other):
+        return isinstance(other, sol_state) and self.board == other.board and self.pegs == other.pegs
+
 
 class solitaire(Problem):
 # """Models a Solitaire problem as a satisfaction problem.
@@ -148,9 +148,16 @@ class solitaire(Problem):
     def result(self, state, action):
         return sol_state(board_perform_move(state.board, action)) 
     def goal_test(self, state):
-        return state.is_goal()
+        if state.pegs == 1:
+            return True
+        else:
+            return False
     def path_cost(self, c, state1, action, state2):
         return c+1
     def h(self, state):
-        return len(self.actions(state))
+        return state.pegs-1
+        
 # """Needed for informed search."""
+
+#print(solitaire([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).h(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]])))
+#print(solitaire([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).result(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]),[(3, 0), (3, 2)]).board)
