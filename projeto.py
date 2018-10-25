@@ -134,8 +134,6 @@ class sol_state:
         self.pegs = pegs
     def __lt__(self, other):
          return self.board < other.board
-    def __eq__(self, other):
-        return isinstance(other, sol_state) and self.board == other.board and self.pegs == other.pegs
 
 
 class solitaire(Problem):
@@ -153,9 +151,9 @@ class solitaire(Problem):
         else:
             return False
     def path_cost(self, c, state1, action, state2):
-        return c+1
-    def h(self, state):
-        return state.pegs
+        return c + 1
+    def h(self, node):
+        return 0
 # """Needed for informed search."""
 
 #print(solitaire([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).h(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]])))
