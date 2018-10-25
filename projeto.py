@@ -2,7 +2,14 @@ from search import *
 import copy
 
 #-----------------------------------#
-#--------------TIPOS----------------#    
+#-------------VARIAVEIS-------------#    
+#-----------------------------------#
+
+helper = {0:0, 1:-1, 2:0, 3:1, 4:-1, 5:0, 6:1, 7:0}
+
+
+#-----------------------------------#
+#--------------TIPOS----------------#
 #-----------------------------------#
 
 # TAI content
@@ -143,36 +150,23 @@ class solitaire(Problem):
     def path_cost(self, c, state1, action, state2):
         return c + 1
     def h(self, node):
-
-        # se apenas tiver uma peca, devolve 0 imediatamente
-        if(self.goal_test(node.state)):
+        if(node.state.pegs == 1):
             return 0
-        
-        pegs  = node.state.pegs
-        board = node.state.board
-        lines   = len(board)
-        columns = len(board[0])
-        actions = self.actions(board)
-        res=0
-
-        # # percorrer colunas
-        # for l in range(lines):
-        #     # percorrer linhas
-        #     for c in range(columns):
-        #         # conteudo da posicao
-        #         content = board[l][c]
-        #         if(is_peg(content)):
-        #             for i in range(len(actions)):
-        #                 if( actions[i][0] == (l,c)):
-        #                     break
-        #                 else:
-        #                     res+=1
-
-        return pegs + res
-                    
-
-
+        lines   = len(node.state.board)
+        columns = len(node.state.board[0])
+        for l in range(lines):
+            for c in range(columns):
+                content = node.state.board[l][c]
+                if is_peg(content):
+                    emptyPositions = 0
+                    for i in range(4):
+                        try:
+                            adjacent = node.state.board[l + helper.get(i*2)][c + helper.get(i*2+1)]
+                            if is_empty(adjacent):
+                                emptyPositions += 1
+                        except IndexError:
+                            adjacent = 'null'
+                    if emptyPositions == 4:
+                        isolatedPegs += 1
+        return node.state.pegs + isolatedPegs
 # """Needed for informed search."""
-
-#print(solitaire([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).h(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]])))
-#print(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).pegs)
