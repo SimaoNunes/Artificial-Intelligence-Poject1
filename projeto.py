@@ -120,10 +120,7 @@ class sol_state:
         self.pegs = pegs
     def __lt__(self, other):
          return self.board < other.board
-    def __eq__(self, other):
-        return isinstance(other, sol_state) and self.board == other.board
-    def __hash__(self):
-        return hash(str(self.board))
+         
 
 class solitaire(Problem):
 # """Models a Solitaire problem as a satisfaction problem.
@@ -155,11 +152,12 @@ class solitaire(Problem):
             for c in range(columns):
                 content = node.state.board[l][c]
                 if is_peg(content):
-                    position = (l,c)
+                    position = make_pos(l,c)
                     is_blocked = 1
                     for i in range(numMoves):
                         if moves[i][0] == position:
                             is_blocked = 0
+                            break
                     noMove += is_blocked
         
         return node.state.pegs + noMove
