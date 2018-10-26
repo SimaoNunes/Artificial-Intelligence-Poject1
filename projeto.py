@@ -2,12 +2,6 @@ from search import *
 import copy
 
 #-----------------------------------#
-#-------------VARIAVEIS-------------#    
-#-----------------------------------#
-
-helper = {0:0, 1:-1, 2:0, 3:1, 4:-1, 5:0, 6:1, 7:0}
-
-#-----------------------------------#
 #--------------TIPOS----------------#
 #-----------------------------------#
 
@@ -154,6 +148,7 @@ class solitaire(Problem):
         lines   = len(node.state.board)
         columns = len(node.state.board[0])
         moves   = board_moves(node.state.board)
+        numMoves= len(moves)
         noMove  = 0
             
         for l in range(lines):
@@ -162,7 +157,7 @@ class solitaire(Problem):
                 if is_peg(content):
                     position = (l,c)
                     is_blocked = 1
-                    for i in range(len(moves)):
+                    for i in range(numMoves):
                         if moves[i][0] == position:
                             is_blocked = 0
                     noMove += is_blocked
@@ -170,54 +165,3 @@ class solitaire(Problem):
         return node.state.pegs + noMove
 
 # """Needed for informed search."""
-
-#print(solitaire([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).h(Node(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]))))
-
-# lines   = len(node.state.board)
-        # columns = len(node.state.board[0])
-        # isolatedPegs = 0
-        # for l in range(lines):
-        #     for c in range(columns):
-        #         content = node.state.board[l][c]
-        #         if is_peg(content):
-        #             emptyPositions = 0
-        #             for i in range(4):
-        #                 try:
-        #                     adjacent = node.state.board[l + helper.get(i*2)][c + helper.get(i*2+1)]
-        #                     if is_empty(adjacent) or is_blocked(adjacent):
-        #                         emptyPositions += 1
-        #                 except IndexError:
-        #                     adjacent = 'null'
-        #             if emptyPositions == 4:
-        #                 isolatedPegs += 1
-        # return node.state.pegs + isolatedPegs
-
-# b1 = [
-#       ["_","_","_","X","X","X"],
-#       ["_","_","_","O","O","_"],
-#       ["_","_","_","_","_","_"],
-#       ["_","_","_","_","_","_"]
-# ]
-
-# def exp(b):
-
-#     lines   = len(b)
-#     columns = len(b[0])
-#     moves   = board_moves(b)
-#     noMove  = 0
-        
-#     print(moves)
-#     for l in range(lines):
-#         for c in range(columns):
-#             content = b[l][c]
-#             if is_peg(content):
-#                 position = (l,c)
-#                 is_blocked = 1
-#                 for i in range(len(moves)):
-#                     if moves[i][0] == position:
-#                         is_blocked = 0
-#                 noMove += is_blocked
-    
-#     print(noMove)
-
-# exp(b1)
