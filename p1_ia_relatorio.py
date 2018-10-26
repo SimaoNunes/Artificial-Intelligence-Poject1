@@ -28,7 +28,7 @@ while (numGame < 4):
     print('greedy_best_first_graph_search:')
     print(end - start)
     print('Nos expandidos ->' + str(p.succs))
-    print('Nos gerados    ->' + str(p.goal_tests))
+    print('Nos gerados    ->' + str(p.states))
     print(p.states)
     print()
 
@@ -38,7 +38,7 @@ while (numGame < 4):
     print("astar_search:")
     print(end-start)
     print("Nos expandidos ->" + str(p.succs))
-    print("Nos gerados    ->" + str(p.goal_tests))
+    print("Nos gerados    ->" + str(p.states))
     print(p.states)
     print()
 
@@ -48,7 +48,7 @@ while (numGame < 4):
     print("depth_first_tree_search:")
     print(end-start)
     print("Nos expandidos ->" + str(p.succs))
-    print("Nos gerados    ->" + str(p.goal_tests))
+    print("Nos gerados    ->" + str(p.states))
     print(p.states)
     print()
     print()
